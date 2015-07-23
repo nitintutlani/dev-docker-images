@@ -1,4 +1,4 @@
-# nitintutlani/centos7-systemd
+# nitintutlani/atomic-docker-images/centos7-systemd
 Base image for running systemd inside docker container.
 
 The Dockerfile is based on Dan Walsh's work.
