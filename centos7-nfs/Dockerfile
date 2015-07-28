@@ -1,5 +1,9 @@
 FROM nitintutlani/centos7-systemd
 
-RUN yum -y install nfs-utils; yum clean all; systemctl enable rpcbind nfs-server
+MAINTAINER "Nitin Tutlani" <nitintutlani@yahoo.com>
+
+RUN yum -y install nfs-utils; yum clean all
+
+RUN systemctl enable rpcbind nfs-server
 
 CMD [ "init" ]
