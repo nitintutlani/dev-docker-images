@@ -10,7 +10,7 @@ Build it:
 Run it:
 
   We must enable privileged mode and allow container to use host networking.
-  $ docker run -d --privileged nitintutlani/alpine-nfs
+  $ docker run -d --privileged alpine-nfs
 
 Use it:
 
@@ -23,7 +23,7 @@ Use it:
   $ chown -R 65534:65534 /var/log/test
 
   We need to mount exports file and export folders into the container.
-  $ docker run -d --privileged -v /etc/exports:/etc/exports:ro -v /var/export:/var/export nitintutlani/alpine-nfs
+  $ docker run -d --privileged -v /etc/exports:/etc/exports:ro -v /var/export:/var/export alpine-nfs
   
   More advanced use on atomic host
-  $ docker run --name nfs -d --privileged --net=host --restart=always -v /etc/exports:/etc/exports:ro -v /var/export:/var/export nitintutlani/alpine-nfs
+  $ docker run --name nfs -d --privileged --net=host --restart=always -v /etc/exports:/etc/exports:ro -v /var/export:/var/export alpine-nfs
