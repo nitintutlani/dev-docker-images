@@ -1,5 +1,7 @@
 # nitintutlani/atomic-docker-images/alpine-nfs
-Nfs server based on docker image alpine:3.2
+Nfs server based on docker image: alpine
+
+This image exposes ports 111/udp and 2049/tcp. It also requires a volume mount at /var/export for exporting through the nfs server.
 
 Build it:
 
@@ -14,7 +16,7 @@ Use it:
 
   Setup exports file on host.
   $ vi /etc/exports
-    Add line: /var/export/test     *(rw,all_squash)
+    Add line: /var/export/test     *(rw,all_squash,no_subtree_check)
 
   Setup export folder and its permissions on host. 65334 is recognised as nfsnobody uid/gid.
   $ mkdir /var/export/test
@@ -24,4 +26,4 @@ Use it:
   $ docker run -d --privileged -v /etc/exports:/etc/exports:ro -v /var/export:/var/export nitintutlani/alpine-nfs
   
   More advanced use on atomic host
-  $ docker run --name nfs -d --privileged --net=host -restart=always -v /etc/exports:/etc/exports:ro -v /var/export:/var/export nitintutlani/alpine-nfs
+  $ docker run --name nfs -d --privileged --net=host --restart=always -v /etc/exports:/etc/exports:ro -v /var/export:/var/export nitintutlani/alpine-nfs
