@@ -1,5 +1,7 @@
-# nitintutlani/atomic-docker-images/alpine-nfs
+# nitintutlani/dev-docker-images/alpine-nfs
 Nfs server based on docker image: alpine
+
+# WARNING: Setting up NFS server through priviledged docker container on Atomic host fails due to absence of proper nfs client files on host.
 
 This image exposes ports 111/udp and 2049/tcp. It also requires a volume mount at /var/export for exporting through the nfs server.
 
