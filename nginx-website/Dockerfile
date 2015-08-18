@@ -6,8 +6,6 @@ RUN apk -U add nodejs nginx git && rm -rf /var/cache/apk/*
 
 EXPOSE 8080 8443
 
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
-
 ENV APP_ROOT="/var/app-root" \
     APP_STORAGE="${APP_ROOT}/storage"
 
