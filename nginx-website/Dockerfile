@@ -29,4 +29,6 @@ LABEL   description="Alpine based nginx image for static website hosting" \
         io.openshift.expose-services="8080:http" \
         io.openshift.tags="builder,nginx,website"
 
+VOLUME ${APP_ROOT}
+
 USER 1001
