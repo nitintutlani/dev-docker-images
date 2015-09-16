@@ -18,8 +18,10 @@ ADD nginx.conf /etc/nginx/
 RUN mkdir -p ${APP_ROOT} && \
 	mkdir -p ${NPM_CONFIG_PREFIX} && \
 	chown -R 1001:0 ${HOME} && \
+	chmod -R 775 ${HOME} && \
 	mkdir -p /tmp/nginx/logs && \
-	chown 1001:0 /tmp/nginx && \
+	chown -R 1001:0 /tmp/nginx && \
+    chmod -R 777 /tmp/nginx && \
 	sed -i -- 's#${APP_ROOT}#'"${APP_ROOT}"'#g' /etc/nginx/nginx.conf
 
 LABEL   description="Alpine based nginx image for static website hosting" \
