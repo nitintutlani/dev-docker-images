@@ -2,12 +2,12 @@ FROM alpine:3.2
 
 MAINTAINER "Nitin Tutlani" <nitintutlani@yahoo.com>
 
-RUN apk -U add nodejs nginx git && rm -rf /var/cache/apk/*
+RUN apk -U add nodejs nginx git tar && rm -rf /var/cache/apk/*
 
 EXPOSE 8080
 
 ENV HOME=/home
-
+    
 ENV APP_ROOT=${HOME}/app-root \
 	NPM_CONFIG_PREFIX=${HOME}/npm
 
