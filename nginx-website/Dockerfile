@@ -27,7 +27,6 @@ RUN mkdir -p ${APP_ROOT} && \
 LABEL   description="Alpine based nginx image for static website hosting" \
         io.k8s.description="Image for building and running nginx based static website" \
         io.k8s.display-name="Nginx website" \
-        io.openshift.s2i.destination="${APP_ROOT}" \
         io.openshift.expose-services="8080:http" \
         io.openshift.tags="builder,nginx,website"
 
