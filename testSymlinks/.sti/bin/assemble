@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cd /tmp
-
-if [ -d /tmp/artifacts ] && [ "$(ls -A /tmp/artifacts)" ]; then
-    mv /tmp/artifacts/* src/
-fi

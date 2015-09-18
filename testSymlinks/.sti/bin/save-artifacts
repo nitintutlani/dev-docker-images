@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cd /tmp
-
-if [ -f src/content.lnk ] && [ -f src/content.txt ]; then
-    tar cf - src
-fi

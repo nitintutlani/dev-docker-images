@@ -1,5 +1,0 @@
-#!/bin/sh
-
-cd /tmp
-
-cat src/content.lnk
