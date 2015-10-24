@@ -1,4 +1,4 @@
-# Instructions to use roopla-webapp template
+# Production deployment for openshift origin
 
 Login to openshift v3 origin
 ```

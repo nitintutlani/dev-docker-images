@@ -27,3 +27,4 @@ docker run -d \
 ```
 
 ### Running in production mode on openshift origin:
+See openshift/template.md
