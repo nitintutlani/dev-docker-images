@@ -11,7 +11,7 @@ ENV HOME=/home \
 	TERM=dumb \
 	NPM_CONFIG_PREFIX=/home/npm \
 	APP_ROOT=/home/app-root \
-	APP_PUBLIC_PATH=public \
+	APP_PUBLIC_PATH=web \
 	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/npm/bin:/home/app-root/node_modules/.bin
 
 ADD config/nginx.conf /etc/nginx/
@@ -40,11 +40,6 @@ RUN mkdir -p ${APP_ROOT} && \
 	sed -i -- 's#${APP_ROOT}#'"${APP_ROOT}"/"${APP_PUBLIC_PATH}"'#g' /etc/php/php-fpm.conf
 
 WORKDIR ${APP_ROOT}
-
-LABEL   io.k8s.description="Image for building and running nginx php-fpm based web applications" \
-		io.k8s.display-name="Nginx php-fpm web application" \
-		io.openshift.expose-services="8080:http" \
-		io.openshift.tags="builder,nginx,php-fpm,web application"
 
 EXPOSE 8080
 
