@@ -1,0 +1,31 @@
+#!/bin/sh
+
+umask 007
+
+cd ${APP_ROOT}
+
+if [ -d /tmp/artifacts ] && [ "$(ls -A /tmp/artifacts)" ]; then
+    mv -v /tmp/artifacts/* .
+fi
+
+mv -v /tmp/src/* .
+mv -v /tmp/src/.[!.]* .
+
+chmod -R ug+rwx .
+
+if [ ! -f vendor/composer.phar ]; then
+  echo "Info: Installing Composer"
+  mkdir vendor
+  curl -s https://getcomposer.org/installer | php -- --quiet --install-dir=./vendor
+else
+  echo "Info: Updating Composer"
+  php ./vendor/composer.phar -q --no-ansi self-update
+fi
+
+php ./vendor/composer.phar --no-ansi install
+
+npm install
+
+bower install -fq
+
+grunt build

@@ -1,0 +1,387 @@
+{
+	"kind": "Template",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "nginx-php-fpm-mysql-webapp-template",
+		"creationTimestamp": null,
+		"annotations": {
+			"description": "This is a nginx-php-fpm-mysql based webapp",
+			"iconClass": "icon-php",
+			"tags": "nginx,php-fpm,mysql,webapp"
+		}
+	},
+	"labels": {
+		"template": "nginx-php-fpm-mysql-webapp"
+	},
+	"objects": [
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "nginx-php-fpm",
+				"creationTimestamp": null
+			},
+			"spec": {
+				"dockerImageRepository": "docker.io/nitintutlani/nginx-php-fpm:latest"
+			}
+		},
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "webapp",
+				"creationTimestamp": null
+			}
+		},
+		{
+			"kind": "DeploymentConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "database",
+				"creationTimestamp": null
+			},
+			"spec": {
+				"strategy": {
+					"type": "Recreate"
+				},
+				"triggers": [
+					{
+						"type": "ConfigChange"
+					}
+				],
+				"replicas": 1,
+				"selector": {
+					"name": "database"
+				},
+				"template": {
+					"metadata": {
+						"creationTimestamp": null,
+						"labels": {
+							"name": "database"
+						}
+					},
+					"spec": {
+						"containers": [
+							{
+								"name": "database",
+								"image": "docker.io/openshift/mysql-55-centos7:latest",
+								"ports": [
+									{
+										"containerPort": 3306,
+										"protocol": "TCP"
+									}
+								],
+								"env": [
+									{
+										"name": "MYSQL_DATABASE",
+										"value": "${MYSQL_DATABASE}"
+									},
+									{
+										"name": "MYSQL_USER",
+										"value": "${MYSQL_USER}"
+									},
+									{
+										"name": "MYSQL_PASSWORD",
+										"value": "${MYSQL_PASSWORD}"
+									}
+								],
+								"resources": {},
+								"terminationMessagePath": "/dev/termination-log",
+								"imagePullPolicy": "Always",
+								"capabilities": {},
+								"securityContext": {
+									"capabilities": {},
+									"privileged": false
+								},
+								"volumeMounts": [{
+									"mountPath": "/var/lib/mysql/data",
+									"name": "database-volume"
+								}]
+							}
+						],
+						"volumes": [{
+							"name": "database-volume",
+							"persistentVolumeClaim": {
+								"claimName": "database-claim"
+							}
+						}],
+						"restartPolicy": "Always",
+						"dnsPolicy": "ClusterFirst",
+						"serviceAccount": ""
+					}
+				}
+			}
+		},
+		{
+			"kind": "BuildConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "webapp-build"
+			},
+			"spec": {
+				"triggers": [
+					{
+						"type": "GitHub",
+						"github": {
+							"secret": "${SECRET_GITHUB}"
+						}
+					},
+					{
+						"type": "Generic",
+						"generic": {
+							"secret": "${SECRET_GENERIC}"
+						}
+					},
+					{
+						"type": "ImageChange",
+						"imageChange": {}
+					}
+				],
+				"source": {
+					"type": "Git",
+					"git": {
+						"uri": "${SOURCE_REPO}",
+						"ref": "master"
+					},
+					"sourceSecret": {
+						"name": "scmsecret"
+					}
+				},
+				"strategy": {
+					"type": "Source",
+					"sourceStrategy": {
+						"from": {
+							"kind": "ImageStreamTag",
+							"name": "nginx-php-fpm:latest"
+						},
+						"incremental": true,
+						"forcePull": true
+					}
+				},
+				"output": {
+					"to": {
+						"kind": "ImageStreamTag",
+						"name": "webapp:latest"
+					}
+				},
+				"resources": {}
+			}
+		},
+		{
+			"kind": "DeploymentConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "webapp",
+				"creationTimestamp": null
+			},
+			"spec": {
+				"strategy": {
+					"type": "Rolling"
+				},
+				"triggers": [
+					{
+						"type": "ConfigChange"
+					},
+					{
+						"type": "ImageChange",
+						"imageChangeParams": {
+							"automatic": true,
+							"containerNames": [
+								"webapp"
+							],
+							"from": {
+								"kind": "ImageStreamTag",
+								"name": "webapp:latest"
+							}
+						}
+					}
+				],
+				"replicas": 1,
+				"selector": {
+					"name": "webapp"
+				},
+				"template": {
+					"metadata": {
+						"creationTimestamp": null,
+						"labels": {
+							"name": "webapp"
+						}
+					},
+					"spec": {
+						"containers": [
+							{
+								"name": "webapp",
+								"image": "webapp",
+								"ports": [
+									{
+										"containerPort": 8080,
+										"protocol": "TCP"
+									}
+								],
+								"env": [
+									{
+										"name": "APP_ENV",
+										"value": "${APP_ENV}"
+									},
+									{
+										"name": "APP_DEBUG",
+										"value": "${APP_DEBUG}"
+									},
+									{
+										"name": "APP_KEY",
+										"value": "${APP_KEY}"
+									},
+									{
+										"name": "MYSQL_DATABASE",
+										"value": "${MYSQL_DATABASE}"
+									},
+									{
+										"name": "MYSQL_USER",
+										"value": "${MYSQL_USER}"
+									},
+									{
+										"name": "MYSQL_PASSWORD",
+										"value": "${MYSQL_PASSWORD}"
+									}
+								],
+								"resources": {},
+								"terminationMessagePath": "/dev/termination-log",
+								"imagePullPolicy": "IfNotPresent",
+								"capabilities": {},
+								"securityContext": {
+									"capabilities": {},
+									"privileged": false
+								}
+							}
+						],
+						"restartPolicy": "Always",
+						"dnsPolicy": "ClusterFirst",
+						"serviceAccount": ""
+					}
+				}
+			},
+			"status": {}
+		},
+		{
+			"kind": "Service",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "webapp"
+			},
+			"spec": {
+				"ports": [
+					{
+						"protocol": "TCP",
+						"port": 5432,
+						"targetPort": 8080
+					}
+				],
+				"selector": {
+					"name": "webapp"
+				},
+				"portalIP": "",
+				"type": "ClusterIP",
+				"sessionAffinity": "None"
+			}
+		},
+		{
+			"kind": "Service",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "database",
+				"creationTimestamp": null
+			},
+			"spec": {
+				"ports": [
+					{
+						"protocol": "TCP",
+						"port": 5434,
+						"targetPort": 3306
+					}
+				],
+				"selector": {
+					"name": "database"
+				},
+				"portalIP": "",
+				"type": "ClusterIP",
+				"sessionAffinity": "None"
+			}
+		},
+		{
+			"kind": "Route",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "webapp-plain"
+			},
+			"spec": {
+				"host": "${APP_DOMAIN}",
+				"to": {
+					"kind": "Service",
+					"name": "webapp"
+				}
+			}
+		}
+	],
+	"parameters": [
+		{
+			"name": "APP_NAME",
+			"description": "Name for webapp",
+			"value": "project-name"
+		},
+		{
+			"name": "APP_ENV",
+			"description": "Environment for webapp, production | stage | local",
+			"value": "production"
+		},
+		{
+			"name": "APP_DEBUG",
+			"description": "Debug mode for webapp, true | false",
+			"value": "false"
+		},
+		{
+			"name": "APP_KEY",
+			"description": "App key for webapp",
+			"generate": "expression",
+			"from": "[A-Za-z0-9]{32}"
+		},
+		{
+			"name": "APP_DOMAIN",
+			"description": "Domain for webapp",
+			"value": "project-domain.com"
+		},
+		{
+			"name": "SOURCE_REPO",
+			"description": "Git repo url for source",
+			"value": "git@bitbucket.org:yourgit/repopath.git"
+		},
+		{
+			"name": "SECRET_GITHUB",
+			"description": "The secret key for BuildConfig github trigger",
+			"generate": "expression",
+			"from": "[A-Za-z0-9]{15}"
+		},
+		{
+			"name": "SECRET_GENERIC",
+			"description": "The secret key for BuildConfig generic trigger",
+			"generate": "expression",
+			"from": "[A-Za-z0-9]{15}"
+		},
+		{
+			"name": "MYSQL_USER",
+			"description": "The username used to connect to the database",
+			"generate": "expression",
+			"from": "user[A-Z0-9]{3}"
+		},
+		{
+			"name": "MYSQL_PASSWORD",
+			"description": "The password used to connect to the database",
+			"generate": "expression",
+			"from": "[a-zA-Z0-9]{8}"
+		},
+		{
+			"name": "MYSQL_DATABASE",
+			"description": "The name of the database",
+			"value": "appDB"
+		}
+	]
+}

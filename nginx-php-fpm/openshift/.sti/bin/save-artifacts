@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd ${APP_ROOT}
+
+if [ -d vendor ] && [ -d node_modules ] && [ -d web/bower_components ]; then
+	tar cf - vendor node_modules web/bower_components
+fi
