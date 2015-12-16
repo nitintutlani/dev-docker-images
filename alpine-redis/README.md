@@ -1,5 +1,5 @@
 # nitintutlani/dev-dockr-images/redis
-  Use this image to run redis server.
+  Use this image to run redis server. Adjusted for completely non-root access.
 
  ## Note:
 

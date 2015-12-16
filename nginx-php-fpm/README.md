@@ -1,5 +1,5 @@
 # nitintutlani/dev-dockr-images/nginx-php-fpm
-  Use this image to serve nginx php-fpm websites. Adjusted for completely non-root usage.
+  Use this image to serve nginx php-fpm websites. Adjusted for completely non-root usage with openshift v3 deployment details.
 
  ## Note:
 
