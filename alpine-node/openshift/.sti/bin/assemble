@@ -1,0 +1,16 @@
+#!/bin/sh
+
+umask 007
+
+cd ${APP_ROOT}
+
+if [ -d /tmp/artifacts ] && [ "$(ls -A /tmp/artifacts)" ]; then
+    mv -v /tmp/artifacts/* .
+fi
+
+mv -v /tmp/src/* .
+mv -v /tmp/src/.[!.]* .
+
+chmod -R ug+rwx .
+
+npm install

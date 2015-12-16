@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd ${APP_ROOT}
+
+if [ -d node_modules ]; then
+	tar cf - node_modules
+fi
