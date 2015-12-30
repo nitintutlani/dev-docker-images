@@ -1,8 +1,8 @@
-FROM alpine:3.2
+FROM mhart/alpine-node:latest
 
 MAINTAINER "Nitin Tutlani" <nitintutlani@yahoo.com>
 
-RUN apk -U add gcc g++ make python ca-certificates nginx nodejs git curl openssl mysql-client tar \
+RUN apk -U add ca-certificates nginx git openssl mysql-client tar \
 	php-fpm php-json php-zlib php-openssl php-pdo php-pdo_mysql php-gd \
 	php-iconv php-mcrypt php-curl php-opcache php-intl php-phar php-xml php-dom php-ctype && \
 	rm -rf /var/cache/apk/*
