@@ -14,3 +14,6 @@ I am preparing these images/repos for use in deploying Openshift v3 projects. Mo
 
 # nginx-website
   Use this image to serve nginx based static websites. Adjusted for completely non-root access.
+
+# anpn
+  Use this image to setup non root alpine nginx php fpm nodejs
