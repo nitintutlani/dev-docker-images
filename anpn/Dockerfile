@@ -10,7 +10,6 @@ RUN apk --update add --no-cache --update \
     git \
     mysql \
     nodejs-lts \
-    memcached \
     make bash g++ zlib-dev libpng-dev \
     php7-phar \
 	php7-pdo \
@@ -28,7 +27,6 @@ RUN apk --update add --no-cache --update \
 	php7-fpm \
     php7-iconv \
     php7-mbstring \
-    php7-memcached \
     php7-tokenizer \
     php7-xmlwriter \
     php7-common \
