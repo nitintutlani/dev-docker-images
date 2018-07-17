@@ -10,7 +10,10 @@ RUN apk --update add --no-cache --update \
     git \
     mysql \
     nodejs-lts \
-    make bash g++ zlib-dev libpng-dev \
+    autoconf \
+    build-base \
+    nasm \
+    libpng-dev \
     php7-phar \
 	php7-pdo \
 	php7-json \
@@ -30,8 +33,21 @@ RUN apk --update add --no-cache --update \
     php7-tokenizer \
     php7-xmlwriter \
     php7-common \
-    php7-cli \
-    && rm -rf /var/cache/apk/*;
+    php7-cli;
+
+RUN apk --update add --no-cache --update \
+    libjpeg-turbo-dev \
+    imagemagick \
+    php7-imagick;
+
+RUN apk --update add --no-cache --update \
+    pngquant;
+
+RUN apk --update add --no-cache --update \
+    gifsicle \
+    optipng;
+
+RUN rm -rf /var/cache/apk/*;
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
