@@ -47,6 +47,10 @@ RUN apk --update add --no-cache --update \
     gifsicle \
     optipng;
 
+RUN apk --update add --no-cache --update \
+    libjpeg-turbo-utils \
+    lcms2-utils;
+
 RUN rm -rf /var/cache/apk/*;
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
