@@ -9,6 +9,7 @@ RUN apk --update add --no-cache --update \
     tzdata \
     git \
     mariadb \
+    mariadb-client \
     mariadb-server-utils \
     nodejs-lts \
     # libjpeg-turbo-utils \
