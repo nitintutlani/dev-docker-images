@@ -8,7 +8,8 @@ RUN apk --update add --no-cache --update \
 	curl \
     tzdata \
     git \
-    mysql \
+    mariadb \
+    mariadb-server-utils \
     nodejs-lts \
     # libjpeg-turbo-utils \
     # optipng \
