@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 LABEL maintainer="Nitin Tutlani <nitintutlani@yahoo.com>"
 
@@ -11,7 +11,8 @@ RUN apk --update add --no-cache --update \
     mariadb \
     mariadb-client \
     mariadb-server-utils \
-    nodejs-lts \
+    npm \
+    nodejs \
     # libjpeg-turbo-utils \
     # optipng \
     # gifsicle \
