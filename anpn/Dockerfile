@@ -46,3 +46,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN rm -rf /etc/localtime \
     && ln -s /usr/share/zoneinfo/UTC /etc/localtime \
     && echo "UTC" > /etc/timezone
+
+RUN apk --update add --no-cache --update \
+    php7-bcmath \
+    && rm -rf /var/cache/apk/*;
