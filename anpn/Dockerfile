@@ -49,5 +49,5 @@ RUN rm -rf /etc/localtime \
 
 RUN apk --update add --no-cache --update \
     php7-bcmath \
-    php7-simplexml \
+    php7-pecl-redis \
     && rm -rf /var/cache/apk/*;
