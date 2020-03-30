@@ -51,3 +51,7 @@ RUN apk --update add --no-cache --update \
     php7-bcmath \
     php7-pecl-redis \
     && rm -rf /var/cache/apk/*;
+
+RUN apk --update add --no-cache --update \
+    php7-fileinfo \
+    && rm -rf /var/cache/apk/*;
