@@ -53,5 +53,5 @@ RUN apk --update add --no-cache --update \
     && rm -rf /var/cache/apk/*;
 
 RUN apk --update add --no-cache --update \
-    php7-fileinfo \
+    php7-zip \
     && rm -rf /var/cache/apk/*;
